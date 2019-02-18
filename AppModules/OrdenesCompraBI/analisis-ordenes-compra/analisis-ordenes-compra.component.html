@@ -1,0 +1,121 @@
+<div class="main-content">
+  <div class="container-fluid">
+
+
+    <div class="card">
+        <div class="row">
+            <div class="col-sm-12">
+              <div class="card-header card-header-success card-header-icon">
+                <div class="card-icon card-header-purple"><i class="material-icons">pie_chart</i></div>
+              </div>
+              <div class="row">
+                  <h3><strong class="title-tag">Análisis Ordenes de Compra</strong></h3>
+                  </div>
+            </div>
+          </div>
+
+
+      <div class="card-body"><br>
+
+        <div class="row" *ngIf="!hayDatos">
+          <div class="col-sm-12 datagrid-container">
+            <h1 class="text-center"><i class="material-icons">bug_report</i>No hay datos</h1>
+            <br>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="hayDatos">
+          <div class="col-sm-12 datagrid-container">
+
+            <dx-pie-chart title="Estados de las Ordenes de Compra" [dataSource]="analisisEstadosDS" palette="palette"
+              paletteExtensionMode="Extrapolate" [ngClass]="{'first-level-cursor': isFirstLevel }" (onPointClick)="filtrarPorEstado($event)">
+              <dxo-legend horizontalAlignment="center" verticalAlignment="bottom"></dxo-legend>
+              <dxo-export [enabled]="true"></dxo-export>
+              <dxi-series argumentField="descripcion" valueField="cantidad">
+                <dxo-label [visible]="true" format="fixedPoint" [customizeText]="customizeLabel">
+                  <dxo-font [size]="16"></dxo-font>
+                  <dxo-connector [visible]="true" [width]="0.5"></dxo-connector>
+                </dxo-label>
+              </dxi-series>
+            </dx-pie-chart>
+            <dx-button class="button-container" text="Atrás" icon="chevronleft" [visible]="!isFirstLevel" (onClick)="quitarFiltros()"></dx-button>
+
+          </div>
+        </div>
+
+        <div class="row" *ngIf="hayDatos">
+          <div class="col-sm-12 datagrid-container">
+
+            <dx-data-grid [dataSource]="ordenesCompraDS" [showColumnLines]="true" [showRowLines]="true" [showBorders]="true"
+              [allowColumnResizing]="true" columnResizingMode="nextColumn" [allowColumnReordering]="true"
+              [columnAutoWidth]="true" [hoverStateEnabled]="true" [cellHintEnabled]="true" noDataText="No hay datos que mostrar"
+              [masterDetail]="{ enabled: true, template: 'detallesOrdenCompra' }">
+
+              <dxo-selection mode="single"></dxo-selection>
+              <dxo-filter-panel [visible]="true"></dxo-filter-panel>
+              <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true" placeholder="Buscar..."></dxo-search-panel>
+              <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+              <dxo-export [enabled]="true" fileName="Ordenes_Compra"></dxo-export>
+
+              <dxi-column dataField="ordenCompraId" caption="No.Orden" alignment="center" width="115px"></dxi-column>
+              <dxi-column dataField="estadoOrdenCompra" caption="Estado" alignment="center"></dxi-column>
+              <dxi-column dataField="fecha" caption="Emitida" alignment="center" dataType="date" format="yyyy-MM-dd"></dxi-column>
+              <dxi-column dataField="fechaVence" caption="Vence" alignment="center" dataType="date" format="yyyy-MM-dd"></dxi-column>
+              <dxi-column dataField="proveedor" caption="Proveedor" alignment="center"></dxi-column>
+              <dxi-column dataField="tipoPago" caption="Tipo de Pago" alignment="center"></dxi-column>
+              <dxi-column dataField="subtotal" alignment="center" caption="SubTotal" cellTemplate="subtotalTemplate"></dxi-column>
+              <div *dxTemplate="let d of 'subtotalTemplate'">{{ d.data.subtotal | currency:
+                obtenerMoneda(d.data.monedaId)}}</div>
+              <dxi-column dataField="gastosEnvio" alignment="center" caption="Gastos de Envio" cellTemplate="gastosEnvioTemplate"></dxi-column>
+              <div *dxTemplate="let d of 'gastosEnvioTemplate'">{{ d.data.gastosEnvio | currency:
+                obtenerMoneda(d.data.monedaId)}}</div>
+              <dxi-column dataField="impuesto" alignment="center" caption="Impuestos" cellTemplate="impuestoTemplate"></dxi-column>
+              <div *dxTemplate="let d of 'impuestoTemplate'">{{ d.data.impuesto | currency:
+                obtenerMoneda(d.data.monedaId)}}</div>
+              <dxi-column dataField="total" alignment="center" caption="Total" cellTemplate="totalTemplate"></dxi-column>
+              <div *dxTemplate="let d of 'totalTemplate'">{{ d.data.total | currency:
+                obtenerMoneda(d.data.monedaId)}}</div>
+              <dxi-column alignment="center" caption="Observación" dataField="observaciones" width="275px"></dxi-column>
+
+
+              <div *dxTemplate="let datasource of 'detallesOrdenCompra'">
+                <dx-data-grid [dataSource]="datasource.data.detallesOrdenCompra" [showBorders]="true" width="1450px"
+                  [showColumnLines]="true" [showRowLines]="true" [allowColumnResizing]="true" [cellHintEnabled]="true"
+                  [columnAutoWidth]="true" [columnAutoWidth]="true" noDataText="No hay datos que mostrar">
+
+                  <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true" placeholder="Buscar..."></dxo-search-panel>
+                  <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                  <dxo-export [enabled]="true" fileName="Detalles_Ordenes_Compra"></dxo-export>
+
+                  <dxi-column dataField="detalleComponenteCompraID" [visible]="false"></dxi-column>
+                  <dxi-column dataField="ordenCompraId" [visible]="false"></dxi-column>
+                  <dxi-column dataField="componente" caption="Componente" alignment="center"></dxi-column>
+                  <dxi-column dataField="marca" caption="Marca" alignment="center"></dxi-column>
+                  <dxi-column dataField="modelo" caption="Modelo" alignment="center"></dxi-column>
+                  <dxi-column alignment="center" dataField="cantidad"></dxi-column>
+                  <dxi-column alignment="center" dataField="precio" cellTemplate="precioTemplate"></dxi-column>
+                  <div *dxTemplate="let d of 'precioTemplate'">{{ d.data.precio | currency:
+                    obtenerMoneda(datasource.data.monedaId)}}</div>
+                  <dxi-column alignment="center" caption="Impuesto (%)" dataField="tipoImpuestoId" format="#0%">
+                    <dxo-lookup [dataSource]="tiposImpuestosDS" displayExpr="porcentaje" valueExpr="id"></dxo-lookup>
+                  </dxi-column>
+                  <dxi-column alignment="center" dataField="total" cellTemplate="totalDetalleTemplate"></dxi-column>
+                  <div *dxTemplate="let d of 'totalDetalleTemplate'">{{ d.data.total | currency:
+                    obtenerMoneda(datasource.data.monedaId)}}</div>
+
+                  <dxo-paging [pageSize]="10" [pageIndex]="0"></dxo-paging>
+                </dx-data-grid>
+              </div>
+
+              <dxo-paging [pageSize]="10" [pageIndex]="0"></dxo-paging>
+            </dx-data-grid>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>

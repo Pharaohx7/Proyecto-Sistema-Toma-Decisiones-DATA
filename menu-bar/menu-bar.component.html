@@ -1,0 +1,74 @@
+<div id="wrapper" class="toggled" #sidebar>
+
+  <!-- Sidebar -->
+  <div id="sidebar-wrapper" class="background-image-1">
+    <ul class="sidebar-nav">
+      <li class="sidebar-logo-container">
+        <img src="../../../assets/img/bi_sidebar_logo.png" class="sidebar-logo" />
+      </li>
+      <li>
+        <a routerLink="/generarData">
+          <i class="material-icons">backup</i> Generar Data</a>
+      </li>
+      <li>
+        <a routerLink="/analisisOrdenesCompra">
+          <i class="material-icons">description</i> Ordenes de Compra</a>
+      </li>
+      <li>
+        <a routerLink="/analisisCompras">
+          <i class="material-icons">shopping_cart</i> Compras</a>
+      </li>
+      <li>
+        <a routerLink="/analisisOrdenesVenta">
+          <i class="material-icons">attach_money</i> Ordenes de Ventas</a>
+      </li>
+      <li>
+        <a routerLink="/analisisVentas">
+          <i class="material-icons">monetization_on</i> Ventas</a>
+      </li>
+      <li>
+        <a routerLink="/configuraciones">
+          <i class="material-icons">settings</i> Configuraciones</a>
+      </li>
+      <li>
+        <a (click)="salir()" style="cursor: pointer;">
+          <i class="material-icons">exit_to_app</i> Cerrar Sesión</a>
+      </li>
+    </ul>
+  </div>
+
+
+  <!-- Top Menu -->
+  <div id="top-nav-bar" class="top-menu background-image-1">
+    <div class="row menu">
+
+      <div class="col-sm-11 col-xs-11 text-left">
+        <h5 class="appName" routerLink="/home"><img src="../../assets/img/favicon.png" class="appIcon" />DATA</h5>
+      </div>
+
+      <div class="col-sm-1 col-xs-1 text-right">
+        <i class="material-icons menu-button" (click)="ocultarMostrarSideBar()">{{menuICon}}</i>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Page Content -->
+  <div id="page-content-wrapper">
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container-fluid">
+
+      <p class="copyright pull-right">
+        &copy;
+        {{fechaActual | date: 'yyyy'}}
+        B.I. Corporation
+      </p>
+    </div>
+  </footer>

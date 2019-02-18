@@ -1,0 +1,53 @@
+<div class="wrapper wrapper-full-page login-custom">
+  <div class="full-page login-page">
+    <div id="login-content" class="content">
+      <div class="container">
+        <div class="row">
+          <br><br><br><br><br><br><br>
+          <div class="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3">
+            <div>
+              <div class="card card-login card-hidden">
+                <img src="../../../assets/img/bi_full_icon.png" class="card-logo"/>
+                <h3 class="login-app-title text-center">Dynamic Analytic Tool Assistance</h3>
+                <div class="card-content">
+                  <div class="input-group">
+                    <span class="input-group-addon">
+                      <i class="material-icons">account_circle</i>
+                    </span>
+                    <div class="form-group label-floating">
+                      <label class="control-label login-label">Usuario</label>
+                      <input type="text" class="form-control login-textbox" [(ngModel)]="loginFrm.usuario">
+                    </div>
+                  </div>
+                  <div class="input-group">
+                    <span class="input-group-addon">
+                      <i class="material-icons">lock_outline</i>
+                    </span>
+                    <div class="form-group label-floating">
+                      <label class="control-label login-label">Clave</label>
+                      <input type="password" class="form-control login-textbox" [(ngModel)]="loginFrm.clave"
+                        (keyup.enter)="acceder()">
+                    </div>
+                  </div>
+
+                  <span *ngIf="credencialesIncorrectas" class="error">{{mensajeCredenciales}}</span>
+
+                </div>
+                <div class="footer text-center">
+                  <button type="button" (click)="acceder()" class="btn btn-bi btn-wd btn-lg">
+                    <i class="material-icons">input</i> Ingresar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+      <p class="copyright text-center pull-right">
+        &copy; {{test | date: 'yyyy'}}
+        <a>B.I. Corporation</a>
+      </p>
+    </footer>
+  </div>
+</div>

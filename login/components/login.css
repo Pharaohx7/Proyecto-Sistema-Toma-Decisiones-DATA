@@ -1,0 +1,75 @@
+.login-custom
+{
+    background-image: url('../../../assets/img/login-wallpaper.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.error{
+    color: red;
+    display:block;
+    text-align:center;
+    padding-top:10px;
+}
+
+.form-group.is-focused .form-control {
+    background-image: linear-gradient(#bb3939, #bb3939), linear-gradient(#D2D2D2, #D2D2D2);
+}
+
+.btn.btn-rose.btn-simple:hover{
+    background-color: #e25353;
+}
+
+.btn.btn-rose.btn-simple{
+    color: #ffffff;
+    background: #bb3939;
+}
+
+.card [data-background-color="red"] {
+    box-shadow: 0 4px 20px 4px rgba(0, 0, 0, 0.14), 0 7px 10px -6px rgba(35, 35, 35, 0.4);
+    background: #bb3939;
+}
+
+.titulo
+{
+    color: #ffffff;
+    margin-top: 0px;
+    font-weight: bold;
+    line-height: 1em;
+}
+
+.titulo:last-child
+{
+    margin-bottom: 35px;
+}
+
+.content{
+    padding-top: 100px;
+}
+
+#login-content {
+    min-height: calc(100vh - 108px) !important;
+}
+
+.login-app-title {
+  color: #283A8E;
+  font-weight:900
+}
+
+.login-label {
+  font-size: 16px!important;
+  top: -30px!important;
+}
+
+.login-textbox {
+  font-size: 20px;
+}
+
+.card-logo {
+  margin-left: 15px;
+  width: 90%;
+}
+
+.btn-bi {
+  background: #283A8E;
+}

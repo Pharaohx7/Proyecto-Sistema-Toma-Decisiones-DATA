@@ -1,0 +1,48 @@
+<div class="main-content">
+  <div class="container-fluid">
+
+    <div class="card">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="card-header card-header-success card-header-icon">
+            <div class="card-icon card-header-purple"><i class="material-icons">public</i></div>
+          </div>
+          <div class="row">
+            <h3><strong class="title-tag">Dynamic Analytic Tool Assistance</strong></h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- SE PUEDE AGREGAR UN TITULO AQUI -->
+
+      <div class="card-body"><br>
+
+        <div class="row">
+          <div class="col-md-12" style="text-align: -webkit-center; margin-bottom: 60px;">
+            <img src="../../assets/img/BI_Home.jpg" style="width: 80%;">
+          </div>
+        </div>
+
+
+
+
+
+
+
+
+        <div data-notify="container" class="col-xs-11 col-sm-3 alert alert-success alert-with-icon animated fadeInDown"
+          role="alert" data-notify-position="top-right"
+          style="display: inline-block; margin: 0px auto; position: fixed; transition: all 0.5s ease-in-out 0s; z-index: 1031; top: 20px; right: 20px;"
+          *ngIf="mostrarNotificaciones">
+          <button mat-raised-button="" type="button" aria-hidden="true" class="close" data-notify="dismiss"
+            style="position: absolute; right: 10px; top: 5px; z-index: 1033;" (click)="mostrarNotificaciones = false">
+            <i class="material-icons">close</i></button><i class="material-icons notifications"
+            data-notify="icon">notifications</i> <span data-notify="title"></span>
+          <span data-notify="message">¡Bienvenido a DATA <strong>{{loggedUser.nombreCompleto}}</strong>!</span>
+          <a routerLink="/generarData" data-notify="url">Clic aqui para comenzar Demo</a></div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

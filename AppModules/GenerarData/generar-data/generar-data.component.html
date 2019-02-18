@@ -1,0 +1,306 @@
+<div class="main-content">
+  <div class="container-fluid">
+
+
+    <div class="card">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="card-header card-header-success card-header-icon">
+            <div class="card-icon card-header-purple"><i class="material-icons">backup</i></div>
+          </div>
+          <div class="row">
+              <h3><strong class="title-tag">Registros de Base de Datos</strong></h3>
+              </div>
+        </div>
+      </div>
+
+      <div class="card-body"><br>
+
+
+
+
+        <div class="row row-container">
+          <dx-tabs [dataSource]="tabsConfig" [selectedIndex]="tabSeleccionado" (onItemClick)="selectTab($event)">
+          </dx-tabs>
+
+          <div class="content dx-fieldset">
+
+            <div class="row">
+              <div class="col-lg-3 col-md-6 col-sm-12 small-container">
+                <span class="labels"><i class="material-icons">business</i>Empresa: </span>
+                <dx-select-box [dataSource]="empresasDS" displayExpr="descripcion" valueExpr="id" readOnly="true"
+                  [value]="empresaId" stylingMode="filled" dropDownButtonTemplate="" placeholder="">
+                </dx-select-box>
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-12 small-container">
+                <span class="labels"><i class="material-icons">history</i> Cantidad de registros: </span>
+                <dx-number-box min="1" [value]="100" [showSpinButtons]="true" #cantidadRegistrosOrdenCompra>
+                </dx-number-box>
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-12 small-container" style="top: -5px;">
+                <span class="labels"><i class="material-icons">event_available</i>
+                  ({{porcentajeOrdenesCompraCompletadas.value}}%) Ordenes de compra completadas:</span>
+                <dx-slider [min]="0" [max]="100" [value]="75" [rtlEnabled]="false" #porcentajeOrdenesCompraCompletadas>
+                </dx-slider><br>
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-12 small-container" style="top: -5px;">
+                <span class="labels"><i class="material-icons">event_note</i>
+                  ({{porcentajeOrdenesVentaPendientes.value}}%) Ordenes de venta pendientes:</span>
+                <dx-slider [min]="0" [max]="100" [value]="75" [rtlEnabled]="false" #porcentajeOrdenesVentaPendientes>
+                </dx-slider><br>
+              </div>
+            </div>
+
+
+
+            <div [hidden]="tabSeleccionado == 0? false : true">
+              <div class="col-sm-12 datagrid-container">
+                <dx-data-grid [dataSource]="ordenesCompraDS" [showColumnLines]="true" [showRowLines]="true"
+                  [showBorders]="true" [allowColumnResizing]="true" columnResizingMode="nextColumn"
+                  [allowColumnReordering]="true" [columnAutoWidth]="true" [hoverStateEnabled]="true"
+                  [cellHintEnabled]="true" noDataText="No hay datos que mostrar"
+                  [masterDetail]="{ enabled: true, template: 'detallesOrdenCompra' }">
+
+                  <dxo-selection mode="single"></dxo-selection>
+                  <dxo-filter-panel [visible]="true"></dxo-filter-panel>
+                  <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true" placeholder="Buscar...">
+                  </dxo-search-panel>
+                  <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                  <dxo-export [enabled]="true" fileName="Ordenes_Compra"></dxo-export>
+
+                  <dxi-column dataField="ordenCompraId" caption="No.Orden" alignment="center" width="115px">
+                  </dxi-column>
+                  <dxi-column dataField="estadoOrdenCompra" caption="Estado" alignment="center"></dxi-column>
+                  <dxi-column dataField="fecha" caption="Emitida" alignment="center" dataType="date"
+                    format="yyyy-MM-dd"></dxi-column>
+                  <dxi-column dataField="fechaVence" caption="Vence" alignment="center" dataType="date"
+                    format="yyyy-MM-dd"></dxi-column>
+                  <dxi-column dataField="proveedor" caption="Proveedor" alignment="center"></dxi-column>
+                  <dxi-column dataField="tipoPago" caption="Tipo de Pago" alignment="center"></dxi-column>
+                  <dxi-column dataField="subtotal" alignment="center" caption="SubTotal"
+                    cellTemplate="subtotalTemplate"></dxi-column>
+                  <div *dxTemplate="let d of 'subtotalTemplate'">{{ d.data.subtotal | currency:
+                  obtenerMoneda(d.data.monedaId)}}</div>
+                  <dxi-column dataField="gastosEnvio" alignment="center" caption="Gastos de Envio"
+                    cellTemplate="gastosEnvioTemplate"></dxi-column>
+                  <div *dxTemplate="let d of 'gastosEnvioTemplate'">{{ d.data.gastosEnvio | currency:
+                  obtenerMoneda(d.data.monedaId)}}</div>
+                  <dxi-column dataField="impuesto" alignment="center" caption="Impuestos"
+                    cellTemplate="impuestoTemplate"></dxi-column>
+                  <div *dxTemplate="let d of 'impuestoTemplate'">{{ d.data.impuesto | currency:
+                  obtenerMoneda(d.data.monedaId)}}</div>
+                  <dxi-column dataField="total" alignment="center" caption="Total" cellTemplate="totalTemplate">
+                  </dxi-column>
+                  <div *dxTemplate="let d of 'totalTemplate'">{{ d.data.total | currency:
+                  obtenerMoneda(d.data.monedaId)}}</div>
+                  <dxi-column alignment="center" caption="Observación" dataField="observaciones" width="275px">
+                  </dxi-column>
+
+
+                  <div *dxTemplate="let datasource of 'detallesOrdenCompra'">
+                    <dx-data-grid [dataSource]="datasource.data.detallesOrdenCompra" [showBorders]="true"
+                      [showColumnLines]="true" [showRowLines]="true" [allowColumnResizing]="true"
+                      [cellHintEnabled]="true" [columnAutoWidth]="true" [columnAutoWidth]="true"
+                      noDataText="No hay datos que mostrar">
+
+                      <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true" placeholder="Buscar...">
+                      </dxo-search-panel>
+                      <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                      <dxo-export [enabled]="true" fileName="Detalles_Ordenes_Compra"></dxo-export>
+
+                      <dxi-column dataField="detalleComponenteCompraID" [visible]="false"></dxi-column>
+                      <dxi-column dataField="ordenCompraId" [visible]="false"></dxi-column>
+                      <dxi-column dataField="componente" caption="Componente" alignment="center"></dxi-column>
+                      <dxi-column dataField="marca" caption="Marca" alignment="center"></dxi-column>
+                      <dxi-column dataField="modelo" caption="Modelo" alignment="center"></dxi-column>
+                      <dxi-column alignment="center" dataField="cantidad"></dxi-column>
+                      <dxi-column alignment="center" dataField="precio" cellTemplate="precioTemplate"></dxi-column>
+                      <div *dxTemplate="let d of 'precioTemplate'">{{ d.data.precio | currency:
+                      obtenerMoneda(datasource.data.monedaId)}}</div>
+                      <dxi-column alignment="center" caption="Impuesto (%)" dataField="tipoImpuestoId" format="#0%">
+                        <dxo-lookup [dataSource]="tiposImpuestosDS" displayExpr="porcentaje" valueExpr="id">
+                        </dxo-lookup>
+                      </dxi-column>
+                      <dxi-column alignment="center" dataField="total" cellTemplate="totalDetalleTemplate"></dxi-column>
+                      <div *dxTemplate="let d of 'totalDetalleTemplate'">{{ d.data.total | currency:
+                      obtenerMoneda(datasource.data.monedaId)}}</div>
+
+
+                      <dxo-paging [pageSize]="10" [pageIndex]="0"></dxo-paging>
+                    </dx-data-grid>
+                  </div>
+
+
+                  <dxo-paging [pageSize]="10" [pageIndex]="0"></dxo-paging>
+                </dx-data-grid>
+              </div>
+            </div>
+
+            <div [hidden]="tabSeleccionado == 1? false : true">
+              <div class="col-sm-12 datagrid-container">
+                <dx-data-grid [dataSource]="comprasDS" [showColumnLines]="true" [showRowLines]="true"
+                  [showBorders]="true" [allowColumnResizing]="true" columnResizingMode="nextColumn"
+                  [allowColumnReordering]="true" [columnAutoWidth]="true" [hoverStateEnabled]="true"
+                  [cellHintEnabled]="true" noDataText="No hay datos que mostrar"
+                  [masterDetail]="{ enabled: true, template: 'detallesCompra' }">
+
+                  <dxo-selection mode="single"></dxo-selection>
+                  <dxo-filter-panel [visible]="true"></dxo-filter-panel>
+                  <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true" placeholder="Buscar...">
+                  </dxo-search-panel>
+                  <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                  <dxo-export [enabled]="true" fileName="Compras"></dxo-export>
+
+                  <dxi-column dataField="compraId" caption="Compra Id" [visible]="false"></dxi-column>
+                  <dxi-column dataField="ordenCompraId" caption="No.Orden" alignment="center" width="115px">
+                  </dxi-column>
+                  <dxi-column dataField="noFactura" caption="No.Factura" alignment="center"></dxi-column>
+                  <dxi-column dataField="cai" caption="CAI" alignment="center"></dxi-column>
+                  <dxi-column dataField="fecha" caption="Ingresada" alignment="center" dataType="date"
+                    format="yyyy-MM-dd"></dxi-column>
+                  <dxi-column dataField="subtotal" alignment="center" caption="SubTotal"
+                    cellTemplate="subtotalTemplate"></dxi-column>
+                  <div *dxTemplate="let d of 'subtotalTemplate'">{{ d.data.subtotal | currency:
+                  obtenerMoneda(d.data.monedaId)}}</div>
+                  <dxi-column dataField="gastosEnvio" alignment="center" caption="Gastos de Envio"
+                    cellTemplate="gastosEnvioTemplate"></dxi-column>
+                  <div *dxTemplate="let d of 'gastosEnvioTemplate'">{{ d.data.gastosEnvio | currency:
+                  obtenerMoneda(d.data.monedaId)}}</div>
+                  <dxi-column dataField="impuesto" alignment="center" caption="Impuestos"
+                    cellTemplate="impuestoTemplate"></dxi-column>
+                  <div *dxTemplate="let d of 'impuestoTemplate'">{{ d.data.impuesto | currency:
+                  obtenerMoneda(d.data.monedaId)}}</div>
+                  <dxi-column dataField="total" alignment="center" caption="Total" cellTemplate="totalTemplate">
+                  </dxi-column>
+                  <div *dxTemplate="let d of 'totalTemplate'">{{ d.data.total | currency:
+                  obtenerMoneda(d.data.monedaId)}}</div>
+                  <dxi-column alignment="center" caption="Observación" dataField="observaciones" width="275px">
+                  </dxi-column>
+
+
+                  <div *dxTemplate="let datasource of 'detallesCompra'">
+                    <dx-data-grid [dataSource]="datasource.data.detallesCompra" [showBorders]="true"
+                      [showColumnLines]="true" [showRowLines]="true" [allowColumnResizing]="true"
+                      [cellHintEnabled]="true" [columnAutoWidth]="true" [columnAutoWidth]="true"
+                      noDataText="No hay datos que mostrar"
+                      [masterDetail]="{ enabled: true, template: 'detallesComponentes' }">
+
+                      <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true" placeholder="Buscar...">
+                      </dxo-search-panel>
+                      <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                      <dxo-export [enabled]="true" fileName="Detalles_Compras"></dxo-export>
+
+                      <dxi-column dataField="detalleCompraId" [visible]="false"></dxi-column>
+                      <dxi-column dataField="compraId" [visible]="false"></dxi-column>
+                      <dxi-column dataField="detalleOrdenCompraId" [visible]="false"></dxi-column>
+                      <dxi-column dataField="componente" caption="Componente" alignment="center"></dxi-column>
+                      <dxi-column dataField="marca" caption="Marca" alignment="center"></dxi-column>
+                      <dxi-column dataField="modelo" caption="Modelo" alignment="center"></dxi-column>
+                      <dxi-column alignment="center" dataField="cantidad"></dxi-column>
+                      <dxi-column alignment="center" dataField="precio" cellTemplate="precioTemplate"></dxi-column>
+                      <div *dxTemplate="let d of 'precioTemplate'">{{ d.data.precio | currency:
+                      obtenerMoneda(datasource.data.monedaId)}}</div>
+                      <dxi-column alignment="center" caption="Impuesto (%)" dataField="tipoImpuestoId" format="#0%">
+                        <dxo-lookup [dataSource]="tiposImpuestosDS" displayExpr="porcentaje" valueExpr="id">
+                        </dxo-lookup>
+                      </dxi-column>
+                      <dxi-column alignment="center" dataField="total" cellTemplate="totalDetalleTemplate"></dxi-column>
+                      <div *dxTemplate="let d of 'totalDetalleTemplate'">{{ d.data.total | currency:
+                      obtenerMoneda(datasource.data.monedaId)}}</div>
+
+                      <div *dxTemplate="let datasource of 'detallesComponentes'">
+                        <dx-data-grid [dataSource]="datasource.data.detallesComponentes" [showBorders]="true"
+                           [showColumnLines]="true" [showRowLines]="true" [allowColumnResizing]="true"
+                          [cellHintEnabled]="true" [columnAutoWidth]="true" [columnAutoWidth]="true"
+                          noDataText="No hay datos que mostrar">
+
+                          <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true" placeholder="Buscar...">
+                          </dxo-search-panel>
+                          <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                          <dxo-export [enabled]="true" fileName="Componentes_Compras"></dxo-export>
+
+                          <dxi-column dataField="detalleComponenteCompraID" [visible]="false"></dxi-column>
+                          <dxi-column dataField="detalleCompraID" [visible]="false"></dxi-column>
+                          <dxi-column dataField="componente" caption="Componente" alignment="center"></dxi-column>
+                          <dxi-column dataField="noSerie" caption="No.Serie" alignment="center"></dxi-column>
+                          <dxi-column dataField="fechaVenceGarantia" caption="Fecha Vence Garantia" alignment="center"
+                            dataType="date" format="yyyy-MM-dd"></dxi-column>
+                          <dxi-column dataField="especificaciones" caption="Especificaciones" alignment="center">
+                          </dxi-column>
+
+
+                          <dxo-paging [pageSize]="10" [pageIndex]="0"></dxo-paging>
+                        </dx-data-grid>
+                      </div>
+
+
+                      <dxo-paging [pageSize]="10" [pageIndex]="0"></dxo-paging>
+                    </dx-data-grid>
+                  </div>
+
+
+                  <dxo-paging [pageSize]="10" [pageIndex]="0"></dxo-paging>
+                </dx-data-grid>
+              </div>
+            </div>
+
+            <div [hidden]="tabSeleccionado == 2? false : true">
+              <div class="col-sm-12 datagrid-container">
+                <dx-data-grid [dataSource]="inventarioDS" [showColumnLines]="true" [showRowLines]="true"
+                  [showBorders]="true" [allowColumnResizing]="true" columnResizingMode="nextColumn"
+                  [allowColumnReordering]="true" [columnAutoWidth]="true" [hoverStateEnabled]="true"
+                  [cellHintEnabled]="true" noDataText="No hay datos que mostrar">
+
+                  <dxo-selection mode="single"></dxo-selection>
+                  <dxo-filter-panel [visible]="true"></dxo-filter-panel>
+                  <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true" placeholder="Buscar...">
+                  </dxo-search-panel>
+                  <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                  <dxo-export [enabled]="true" fileName="Ordenes_Compra"></dxo-export>
+
+                  <dxi-column dataField="lote" caption="No.Lote" alignment="center" width="115px"></dxi-column>
+                  <dxi-column dataField="componente" caption="Componente" alignment="center"></dxi-column>
+                  <dxi-column dataField="marca" caption="Marca" alignment="center"></dxi-column>
+                  <dxi-column dataField="modelo" caption="Modelo" alignment="center"></dxi-column>
+                  <dxi-column dataField="noSerie" caption="No.Serie" alignment="center"></dxi-column>
+                  <dxi-column dataField="fechaIngreso" caption="Ingresado" alignment="center" dataType="date"
+                    format="yyyy-MM-dd"></dxi-column>
+                  <dxi-column dataField="fechaVenceGarantia" caption="Vence Garantia" alignment="center" dataType="date"
+                    format="yyyy-MM-dd"></dxi-column>
+                  <dxi-column dataField="costoLempiras" alignment="center" caption="Costo en Lempiras"
+                    cellTemplate="costoLempirasTemplate"></dxi-column>
+                  <div *dxTemplate="let d of 'costoLempirasTemplate'">{{ d.data.costoLempiras | currency: 'L ' }}</div>
+                  <dxi-column alignment="center" caption="Especificaciones" dataField="especificaciones" width="275px">
+                  </dxi-column>
+
+
+                  <dxo-paging [pageSize]="10" [pageIndex]="0"></dxo-paging>
+                </dx-data-grid>
+              </div>
+            </div>
+
+            <div [hidden]="tabSeleccionado == 3? false : true">
+
+            </div>
+
+            <div [hidden]="tabSeleccionado == 4? false : true">
+
+            </div>
+
+
+            <div class="col-lg-12 col-md-12 col-sm-12 text-right">
+              <button id="btnGenerarBD" class="btn btn-primary" (click)="generarOrdenesCompra()" >
+                <span class="mat-button-wrapper"><i class="material-icons">backup</i> Generar Registros En Base de Datos</span>
+              </button>
+            </div>
+
+
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,92 @@
+<div class="main-content">
+  <div class="container-fluid">
+
+
+    <div class="card">
+        <div class="row">
+            <div class="col-sm-12">
+              <div class="card-header card-header-success card-header-icon">
+                <div class="card-icon card-header-purple"><i class="material-icons">bar_chart</i></div>
+              </div>
+              <div class="row">
+                  <h3><strong class="title-tag">Análisis de Compras</strong></h3>
+                  </div>
+            </div>
+          </div>
+
+
+      <div class="card-body"><br>
+
+        <div class="row" *ngIf="false">
+          <div class="col-sm-12 datagrid-container">
+            <h1 class="text-center"><i class="material-icons">bug_report</i>No hay datos</h1>
+            <br>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-sm-12 datagrid-container">
+            <dx-chart [dataSource]="analisisPorProveedor" palette="material" [customizeLabel]="customizeLabel" (onPointClick)="filtrarPorProveedor($event)">
+              <dxo-title text="Tiempos de entrega por Proveedor">
+              </dxo-title>
+              <dxo-tooltip [enabled]="true" [shared]="true" [customizeTooltip]="customizeTooltip"></dxo-tooltip>
+              <dxo-common-series-settings argumentField="proveedor" type="bar" valueField="noOrden"
+                [ignoreEmptyPoints]="true">
+              </dxo-common-series-settings>
+              <dxi-value-axis [maxValueMargin]="0.01" ></dxi-value-axis>
+              <dxo-legend verticalAlignment="bottom" horizontalAlignment="center" [visible]="true"></dxo-legend>
+              <dxo-export [enabled]="true"></dxo-export>
+              <dxo-series-template nameField="proveedor"></dxo-series-template>
+            </dx-chart>
+          </div>
+        </div>
+
+
+        <div class="row" *ngIf="true">
+          <div class="col-sm-12 datagrid-container">
+
+            <dx-data-grid [dataSource]="tiemposEntregaDS" [showColumnLines]="true" [showRowLines]="true" [showBorders]="true"
+              [allowColumnResizing]="true" columnResizingMode="nextColumn" [allowColumnReordering]="true"
+              [columnAutoWidth]="true" [hoverStateEnabled]="true" [cellHintEnabled]="true" noDataText="No hay datos que mostrar">
+
+              <dxo-selection mode="single"></dxo-selection>
+              <dxo-filter-panel [visible]="true"></dxo-filter-panel>
+              <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true" placeholder="Buscar..."></dxo-search-panel>
+              <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+              <dxo-group-panel [visible]="true" text="Expand All Groups"></dxo-group-panel>
+              <dxo-export [enabled]="true" fileName="Tiempos_Entrega_Compras"></dxo-export>
+
+              <dxi-column dataField="noOrden" caption="No.Orden" alignment="center" width="115px"></dxi-column>
+              <dxi-column dataField="noFactura" caption="No.Factura" alignment="center"></dxi-column>
+              <dxi-column dataField="proveedorId" [visible]="false"></dxi-column>
+              <dxi-column dataField="proveedor" caption="Proveedor" alignment="center" [groupIndex]="0"></dxi-column>
+              <dxi-column dataField="estadoOrden" caption="Estado" alignment="center" [groupIndex]="1"></dxi-column>
+              <dxi-column dataField="fechaEmision" caption="Emitida" alignment="center" dataType="date" format="yyyy-MM-dd"></dxi-column>
+              <dxi-column dataField="fechaVencimiento" caption="Venció" alignment="center" dataType="date" format="yyyy-MM-dd"></dxi-column>
+              <dxi-column dataField="fechaIngreso" caption="Ingresada" alignment="center" dataType="date" format="yyyy-MM-dd"></dxi-column>
+              <dxi-column dataField="tiempoEntregaContrato" caption="Tiempo de entrega" alignment="center" format="#0 dias"></dxi-column>
+              <dxi-column dataField="tiempoEntregaFinal" caption="Entregado en" alignment="center" format="#0 dias"></dxi-column>
+              <dxi-column dataField="cumplimiento" caption="Cumplimiento" alignment="center" format="#0%"></dxi-column>
+              <dxi-column dataField="diasFavor" caption="Adelantada" alignment="center" format="#0 dias"></dxi-column>
+              <dxi-column dataField="diasRetraso" caption="Retrasada" alignment="center" format="#0 dias"></dxi-column>
+
+
+              <dxo-paging [pageSize]="10" [pageIndex]="0"></dxo-paging>
+            </dx-data-grid>
+
+          </div>
+        </div>
+
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+
+
+

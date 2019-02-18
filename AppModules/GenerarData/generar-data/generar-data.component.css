@@ -1,0 +1,24 @@
+.labels {
+  font-weight: bolder!important;
+  font-size: 16px!important;
+}
+
+.row-container {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.small-container {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.row-button-container {
+  top: -10px;
+}
+
+#btnGenerarBD {
+  background-color: #283A8E!important;
+  margin-top: 15px;
+  margin-bottom: 25px;
+}
